@@ -25,6 +25,6 @@ use "drush ws --tail --full" to tail the watchdog logs
 Usage
 ----
 
-drush -u 1 --root=/var/www/drupal7 -l http://yourFQDN coalliance_generate_derivatives yournamespace:30607
+drush -u 1 --root=/var/www/drupal7 -l http://yourFQDN coalliance_generate_derivatives yournamespace:pid#
 
-drush -u 1 --root=/var/www/drupal7 -l http://yourFQDN coalliance_generate_techmd yournamespace:30607
+drush -u 1 --root=/var/www/drupal7 -l http://yourFQDN coalliance_generate_techmd yournamespace:pid#

@@ -11,6 +11,18 @@
  */
 function coalliance_derivative_generation_drush_command() {
  $items = array();
+ $items['coalliance_generate_techmd'] = array(
+    'callback' => 'coalliance_derivative_fits',
+    'description' => 'generates derivative',
+    'arguments' => array(
+      'fedora_pid' => "The Fedora PID to process",
+    ),
+    'options' => array(),
+    'examples' => array(
+      'simple example' => 'drush -u 1 --root=/var/www/drupal7 -l http://codearl7.coalliance.org coalliance_generate_techmd adrtest:1',
+    ),
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
+  );
  $items['coalliance_generate_derivatives'] = array(
     'callback' => 'coalliance_derivatives_generation',
     'description' => 'generates derivatives',
@@ -23,8 +35,59 @@ function coalliance_derivative_generation_drush_command() {
     ),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
   );
+ $items['coalliance_generate_derivatives_test'] = array(
+    'callback' => 'coalliance_derivatives_generation_test',
+    'description' => 'generates derivatives without needed to know content model',
+    'arguments' => array(
+      'fedora_pid' => "The Fedora PID to process",
+    ),
+    'options' => array(),
+    'examples' => array(
+      'simple example' => 'drush -u 1 --root=/var/www/drupal7 -l http://codearl7.coalliance.org coalliance_generate_derivatives_test adrtest:1',
+    ),
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_LOGIN,
+  );
 
   return $items;
+}
+/**
+ * derivative generation without specifying the content model
+ *
+ *
+ */
+function coalliance_derivative_fits($pid) {
+
+$object = islandora_object_load($pid);
+module_load_include('inc', 'islandora_fits', 'includes/derivatives');
+
+islandora_fits_create_techmd($object);
+
+}
+
+/**
+ * derivative generation
+ *
+ *
+/**
+ * derivative generation without specifying the content model
+ *
+ *
+ */
+function coalliance_derivatives_generation_test($pid) {
+
+$object = islandora_object_load($pid);
+module_load_include('inc', 'islandora', 'includes/derivatives');
+/*  return array(
+    'title' => t('Regenerating all derivatives for @label', array('@label' => $object->label)),
+    'operations' => islandora_do_batch_derivatives($object, array('force' => TRUE)),
+    'init_message' => t('Preparing to regenerate derivatives...'),
+    'progress_message' => t('Time elapsed: @elapsed <br/>Estimated time remaining @estimate.'),
+    'error_message' => t('An error has occurred.'),
+    'file' => drupal_get_path('module', 'islandora') . '/includes/regenerate_derivatives.form.inc',
+    'finished' => 'islandora_regenerate_derivative_batch_finished',
+  );
+*/
+islandora_do_batch_derivatives($object, array('force' => TRUE));
 }
 
 /**
@@ -61,10 +124,10 @@ islandora:sp_videoCModel
       if ($cModel == 'islandora:sp_basic_image') {                                     // example pid == wyu:9307
              echo "\n  $pid is OK to process using the $cModel content model\n\n";
              module_load_include('inc', 'islandora_basic_image', 'includes/derivatives');
-             #islandora_basic_image_create_thumbnail($object, $force = FALSE);
-             #islandora_basic_image_create_medium_size($object, $force = FALSE);
+             islandora_basic_image_create_thumbnail($object, $force = FALSE);
+             islandora_basic_image_create_medium_size($object, $force = FALSE);
       } elseif ($cModel == 'islandora:sp_large_image_cmodel') {
-             echo "$\n  pid is OK to process using the $cModel content model\n\n";
+             echo "\n  $pid is OK to process using the $cModel content model\n\n";
              module_load_include('inc', 'islandora_large_image', 'includes/derivatives');
              islandora_large_image_create_jp2_derivative($object, $force = FALSE);
              islandora_large_image_create_tn_derivative($object, $force = FALSE);

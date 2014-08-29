@@ -33,6 +33,7 @@ function coalliance_derivative_generation_drush_command() {
  *
  */
 function coalliance_derivatives_generation($pid) {
+  $object = islandora_object_load($pid);
   module_load_include('inc', 'islandora', 'includes/regenerate_derivatives.form');
   $batch = islandora_regenerate_object_derivatives_batch($object);
   batch_set($batch);

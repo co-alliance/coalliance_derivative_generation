@@ -2,16 +2,15 @@
 
 /**
  * @file
- * A drush script for generating derivatives 
- *
+ * A drush script for generating derivatives.
  */
 
 /**
  * Implements hook_drush_command().
  */
 function coalliance_derivative_generation_drush_command() {
- $items = array();
- $items['coalliance_generate_derivatives'] = array(
+  $items = array();
+  $items['coalliance_generate_derivatives'] = array(
     'callback' => 'coalliance_derivatives_generation',
     'description' => 'generates derivatives',
     'arguments' => array(
@@ -28,9 +27,7 @@ function coalliance_derivative_generation_drush_command() {
 }
 
 /**
- * derivative generation
- *
- *
+ * Use Islandodra batch derivative generation.
  */
 function coalliance_derivatives_generation($pid) {
   $object = islandora_object_load($pid);
